@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Gestión de Reclusos</title>
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+ 
+  
+      h1, h2, h3 {
+        color: #343a40;
+      }
+  
+      .navbar {
+        background-color: #1c1c1c;
+        padding: 1rem 2rem;
+
+      }
+  
+      .navbar a {
+        color: white;
+      }
+      .icon {
+            font-size: 4rem;
+            color: #2193b0;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+  
+      .container {
+        margin-top: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        padding: 20px;
+      }
+  
+      .table th, .table td {
+        vertical-align: middle;
+      }
+  
+      .btn-primary {
+        background-color: #007bff;
+        border: none;
+      }
+  
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+  
+      .alert {
+        border-radius: 5px;
+      }
+
+      .navbar-nav .nav-link {
+            color: #ccc !important;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #fff !important;
+        }
+
+    </style>
+  </head>
+  <body>
+  
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <i class="fas fa-shield-alt icon" href="index.html"></i>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <a class="nav-link active" href="index.html">Volver</a>
+              </li>
+          </ul>
+      </div>
+      </div>
+    </nav>
+  
+    <div class="container mt-5">
+      <h1>Gestión de Reclusos</h1>
+      <hr class="my-4"> 
+      <h2 id="titulo-formulario" class="mt-4">Agregar Recluso</h2>
+      <form id="form-recluso">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" required>
+        </div>
+        <div class="mb-3">
+          <label for="identificacion" class="form-label">Identificación</label>
+          <input type="text" class="form-control" id="identificacion" name="identificacion" required>
+        </div>
+        <div class="mb-3">
+          <label for="delito" class="form-label">Delito</label>
+          <input type="text" class="form-control" id="delito" name="delito" required>
+        </div>
+        <div class="mb-3">
+          <label for="condena" class="form-label">Condena (años)</label>
+          <input type="number" class="form-control" id="condena" name="condena" required>
+        </div>
+        <div class="mb-3">
+          <label for="fecha_ingreso" class="form-label">Fecha de Ingreso</label>
+          <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Agregar Recluso</button>
+      </form>
+  
+      <div id="mensaje" class="mt-3"></div>
+  
+      <h3 class="mt-5">Listado de Reclusos</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Identificación</th>
+            <th>Delito</th>
+            <th>Condena</th>
+            <th>Fecha de Ingreso</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="lista-reclusos">
+          <!-- Aquí se cargará la lista de reclusos -->
+        </tbody>
+      </table>
+    </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000/reclusos';
+    let reclusoActualId = null; // Para almacenar el ID del recluso actual en edición
+
+    // Manejar el envío del formulario para agregar o editar un recluso
+    document.getElementById('form-recluso').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const formData = {
+        nombre: document.getElementById('nombre').value,
+        identificacion: document.getElementById('identificacion').value,
+        delito: document.getElementById('delito').value,
+        condena: document.getElementById('condena').value,
+        fecha_ingreso: document.getElementById('fecha_ingreso').value,
+      };
+
+      try {
+        let response;
+        if (reclusoActualId) {
+          // Si estamos editando un recluso
+          response = await fetch(`${API_URL}/${reclusoActualId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          reclusoActualId = null; // Resetear el ID después de editar
+          document.getElementById('titulo-formulario').innerText = 'Agregar Recluso'; // Resetear el título
+        } else {
+          // Si estamos agregando un nuevo recluso
+          response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+        }
+
+        if (!response.ok) {
+          throw new Error('Error en la solicitud al agregar o editar recluso');
+        }
+
+        const result = await response.text();
+        document.getElementById('mensaje').innerHTML = `<div class="alert alert-success">${result}</div>`;
+
+        // Después de agregar o editar, recargar la lista de reclusos
+        obtenerReclusos();
+      } catch (error) {
+        document.getElementById('mensaje').innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+      }
+    });
+
+    // Función para obtener y mostrar la lista de reclusos
+    async function obtenerReclusos() {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error('Error al obtener la lista de reclusos');
+        }
+
+        const reclusos = await response.json();
+        const tbody = document.getElementById('lista-reclusos');
+        tbody.innerHTML = '';  // Limpiar tabla antes de cargar nuevos datos
+
+        reclusos.forEach(recluso => {
+          const fila = `
+            <tr>
+              <td>${recluso.id_recluso}</td>
+              <td>${recluso.nombre}</td>
+              <td>${recluso.identificacion}</td>
+              <td>${recluso.delitos}</td>
+              <td>${recluso.condena}</td>
+              <td>${recluso.fecha_ingreso}</td>
+               <td>
+                <button class="btn btn-warning" onclick="editarRecluso(${recluso.id_recluso})">Editar</button>
+                <button class="btn btn-danger" onclick="eliminarRecluso(${recluso.id_recluso})">Eliminar</button>
+              </td>
+            </tr>
+          `;
+          tbody.innerHTML += fila;
+        });
+      } catch (error) {
+        document.getElementById('mensaje').innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+      }
+    }
+
+    async function eliminarRecluso(id) {
+  if (confirm('¿Estás seguro de que deseas eliminar este recluso?')) {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, { // Asegúrate que la URL sea correcta
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        throw new Error('Error al eliminar el recluso');
+      }
+      const result = await response.text();
+      document.getElementById('mensaje').innerHTML = `<div class="alert alert-success">${result}</div>`;
+      obtenerReclusos(); // Recargar la lista de reclusos
+    } catch (error) {
+      document.getElementById('mensaje').innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+    }
+  }
+}
+
+
+    // Función para editar un recluso
+    async function editarRecluso(id) {
+      try {
+        const response = await fetch(`${API_URL}/${id}`);
+        if (!response.ok) {
+          throw new Error('Error al obtener el recluso');
+        }
+
+        const recluso = await response.json();
+        
+        // Rellenar el formulario con los datos del recluso
+        document.getElementById('nombre').value = recluso.nombre;
+        document.getElementById('identificacion').value = recluso.identificacion;
+        document.getElementById('delito').value = recluso.delitos;
+        document.getElementById('condena').value = recluso.condena;
+
+        // Convertir la fecha de ingreso al formato correcto (yyyy-MM-dd)
+        const fechaIngreso = new Date(recluso.fecha_ingreso);
+        document.getElementById('fecha_ingreso').value = fechaIngreso.toISOString().split('T')[0];
+
+        // Establecer el ID del recluso actual
+        reclusoActualId = id; // Guardar el ID del recluso actual
+        document.getElementById('titulo-formulario').innerText = 'Editar Recluso'; // Cambiar el título del formulario
+      } catch (error) {
+        document.getElementById('mensaje').innerHTML = `<div class="alert alert-danger">${error.message}</div>`;
+      }
+    }
+
+    // Cargar la lista de reclusos al cargar la página
+    document.addEventListener('DOMContentLoaded', obtenerReclusos);
+  </script>
+</body>
+</html>

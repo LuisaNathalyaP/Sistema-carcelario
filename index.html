@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Sistema Carcelario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        footer {
+            margin-top: 2rem;
+            background-color: #1c1c1c;
+            padding: 1rem;
+            color: white;
+            text-align: center;
+          }
+        nav.navbar {
+            background-color: #1c1c1c;
+            padding: 1rem 2rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .navbar-nav .nav-link {
+            color: #ccc !important;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #fff !important;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        p {
+            color: #eee;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .card .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2193b0;
+        }
+
+        .card .card-text {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .btn-primary {
+            background-color: #2193b0;
+            border: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(33, 147, 176, 0.5);
+        }
+
+        .btn-primary:hover {
+            background-color: #6dd5ed;
+        }
+
+        .icon {
+            font-size: 4rem;
+            color: #2193b0;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover .icon {
+            color: #6dd5ed;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .col-md-6 {
+            flex: 0 0 48%;
+        }
+
+        @media (max-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 100%;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2193b0;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <i class="fas fa-shield-alt icon"></i>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+           
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>Bienvenido al Sistema de Gestión Penitenciaria</h1>
+        <p>Monitorea y gestiona todas las actividades relacionadas con la administración del penal.</p>
+
+        <div class="row mt-5">
+            <!-- Panel Reclusos -->
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <i class="fas fa-user-shield icon"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Reclusos</h5>
+                        <p class="card-text">Administra el registro y control de los reclusos.</p>
+                        <a href="reclusos.html" class="btn btn-primary">Ver Reclusos</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Personal -->
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <i class="fas fa-users icon"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Personal</h5>
+                        <p class="card-text">Gestiona el personal a cargo del penal.</p>
+                        <a href="personal.html" class="btn btn-primary">Ver Personal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Panel Visitas -->
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <i class="fas fa-handshake icon"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Visitas</h5>
+                        <p class="card-text">Control de las visitas registradas para cada recluso.</p>
+                        <a href="visitas.html" class="btn btn-primary">Ver Visitas</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Reporte de Actividades -->
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <i class="fas fa-clipboard-list icon"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Reporte de Actividades</h5>
+                        <p class="card-text">Genera reportes sobre las actividades diarias.</p>
+                        <a href="reporte_actividades.html" class="btn btn-primary">Ver Reporte de Actividades</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Sistema Carcelario</p>
+  </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
